@@ -1,5 +1,5 @@
 # Stage 1: Build the application
-FROM maven:3.8.6-openjdk-17-slim AS builder
+FROM maven:3.8.6-eclipse-temurin-17 AS builder
 
 # Set the working directory
 WORKDIR /app
@@ -15,7 +15,7 @@ COPY src ./src
 RUN mvn package -DskipTests
 
 # Stage 2: Run the application
-FROM eclipse-temurin:17-jre-jammy
+FROM eclipse-temurin:17-jre
 
 # Set the working directory
 WORKDIR /app
@@ -24,7 +24,7 @@ WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 
 # Expose the port your application runs on (adjust if necessary)
-EXPOSE 8081
+EXPOSE 8080
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "app.jar"]
