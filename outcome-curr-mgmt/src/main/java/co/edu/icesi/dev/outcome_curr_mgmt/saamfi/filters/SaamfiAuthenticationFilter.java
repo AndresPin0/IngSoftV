@@ -50,6 +50,28 @@ public class SaamfiAuthenticationFilter extends OncePerRequestFilter {
 	 */
 
 	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+		String contextPath = request.getContextPath(); // '/outcurrapi'
+		String requestURI = request.getRequestURI();   // Ruta completa de la solicitud
+
+		String relativePath = requestURI.substring(contextPath.length());
+
+		logger.debug("Context Path: " + contextPath);
+		logger.debug("Request URI: " + requestURI);
+		logger.debug("Relative Path: " + relativePath);
+
+		boolean shouldNotFilter = relativePath.startsWith("/actuator/")
+				|| relativePath.startsWith("/h2-console/")
+				|| relativePath.startsWith("/v1/auth/users/login")
+				|| relativePath.startsWith("/swagger-ui/")
+				|| relativePath.startsWith("/v3/api-docs/");
+
+		logger.debug("shouldNotFilter: " + shouldNotFilter);
+
+		return shouldNotFilter;
+	}
+
+	@Override
 	protected void doFilterInternal(HttpServletRequest request,@Nonnull HttpServletResponse response, @Nonnull  FilterChain filterChain)
 			throws ServletException, IOException {
 		String header = request.getHeader(HEADER_STRING);

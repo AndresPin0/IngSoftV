@@ -37,19 +37,18 @@ public class SaamfiJwtTools {
     private final SaamfiClient saamfiClient;
 
     public String getUsernameFromJWT(String authToken) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(saamfiClient.getPublicKey()).build()
+        Claims claims = Jwts.parser().setSigningKey(saamfiClient.getPublicKey()).build()
                 .parseClaimsJws(authToken).getBody();
         return (String) claims.get(USERNAME_CLAIM);
     }
-
     public long getSysIdFromJWT(String authToken) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(saamfiClient.getPublicKey()).build()
+        Claims claims = Jwts.parser().setSigningKey(saamfiClient.getPublicKey()).build()
                 .parseClaimsJws(authToken).getBody();
         return (int) claims.get(SYSTEM_CLAIM);
     }
 
     public Collection<SimpleGrantedAuthority> getPermissionNamesFromJWT(String authToken) {
-        final JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(saamfiClient.getPublicKey()).build();
+        final JwtParser jwtParser = Jwts.parser().setSigningKey(saamfiClient.getPublicKey()).build();
         final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(authToken);
         final Claims claims = claimsJws.getBody();
         logger.info("\nroles: " + claims.get(ROLE_KEYS).toString() + "\n\n");
@@ -65,7 +64,7 @@ public class SaamfiJwtTools {
     }
 
     public boolean validateToken(String authToken) {
-        Jwts.parserBuilder().setSigningKey(saamfiClient.getPublicKey()).build().parseClaimsJws(authToken);
+        Jwts.parser().setSigningKey(saamfiClient.getPublicKey()).build().parseClaimsJws(authToken);
         return true;
     }
 
@@ -76,13 +75,13 @@ public class SaamfiJwtTools {
     }
 
     public long getInstIdFromJWT(String authToken) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(saamfiClient.getPublicKey()).build()
+        Claims claims = Jwts.parser().setSigningKey(saamfiClient.getPublicKey()).build()
                 .parseClaimsJws(authToken).getBody();
         return (int) claims.get(INSTITUTION_CLAIM);
     }
 
     public boolean tokenHasPermission(String token, String permissionName) {
-        Claims claims = Jwts.parserBuilder().setSigningKey(saamfiClient.getPublicKey()).build().parseClaimsJws(token)
+        Claims claims = Jwts.parser().setSigningKey(saamfiClient.getPublicKey()).build().parseClaimsJws(token)
                 .getBody();
 
         String roles = claims.get("role", String.class);

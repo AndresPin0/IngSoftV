@@ -1,30 +1,30 @@
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\faculty\FacultyServiceTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\validator\faculty\AcadProgramValidatorImplTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\TestConfigurationData.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\provider\faculty\AcadProgramProviderTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\provider\faculty\FacultyProviderTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\persistence\curriculum_definition\CourseRepositoryTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\util\OutcomeCurrMgmtUtil.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\curriculum_definition\CourseServiceTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\util\CoursesDummies.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\banner\BannerFacultyServiceTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\persistence\curriculum_qa\StudOutcomeRepositoryTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\validator\BaseValidatorTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\validator\faculty\FacultyValidatorImplTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\validator\audit\DateRangeValidatorImplTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\rs\curriculum_qa\AuthCurrMapControllerTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\curriculum_qa\StudOutcomeServiceTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\curriculum_qa\AssessmentGenPlanServiceTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\management\AcPeriodServiceTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\rs\management\AuthUserControllerImplTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\validator\curriculum_qa\AssessmentGenPlanValidatorImplTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\util\SODummies.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\audit\ChangeLogMatcher.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\curriculum_qa\CurrMapServiceTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\faculty\PerfLvlServiceTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\faculty\PerfLvlMatcher.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\audit\ChangeLogServiceTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\faculty\matcher\FacultyMatcher.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\util\CurrMapsDummies.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\curriculum_definition\AcadProgCurriculumServiceTest.java
-C:\Users\Windows\Taller 2.1\Proyecto\outcome-backend\outcome-curr-mgmt\src\test\java\co\edu\icesi\dev\outcome_curr_mgmt\service\faculty\matcher\AcadProgramMatcher.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/faculty/PerfLvlMatcher.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/faculty/matcher/FacultyMatcher.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/TestConfigurationData.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/validator/faculty/AcadProgramValidatorImplTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/persistence/curriculum_qa/StudOutcomeRepositoryTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/banner/BannerFacultyServiceTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/provider/faculty/AcadProgramProviderTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/management/AcPeriodServiceTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/provider/faculty/FacultyProviderTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/util/OutcomeCurrMgmtUtil.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/validator/curriculum_qa/AssessmentGenPlanValidatorImplTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/util/CoursesDummies.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/rs/curriculum_qa/AuthCurrMapControllerTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/faculty/matcher/AcadProgramMatcher.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/validator/faculty/FacultyValidatorImplTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/validator/BaseValidatorTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/curriculum_definition/CourseServiceTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/util/CurrMapsDummies.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/validator/audit/DateRangeValidatorImplTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/faculty/FacultyServiceTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/curriculum_definition/AcadProgCurriculumServiceTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/util/SODummies.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/persistence/curriculum_definition/CourseRepositoryTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/faculty/PerfLvlServiceTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/curriculum_qa/CurrMapServiceTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/audit/ChangeLogMatcher.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/curriculum_qa/StudOutcomeServiceTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/curriculum_qa/AssessmentGenPlanServiceTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/rs/management/AuthUserControllerImplTest.java
+/Users/andres/Desktop/Universidad/IngSoft_5/ProyectoInge5/outcome-curr-mgmt/src/test/java/co/edu/icesi/dev/outcome_curr_mgmt/service/audit/ChangeLogServiceTest.java

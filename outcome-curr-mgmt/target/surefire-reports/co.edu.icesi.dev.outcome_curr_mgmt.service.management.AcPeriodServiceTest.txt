@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: co.edu.icesi.dev.outcome_curr_mgmt.service.management.AcPeriodServiceTest
 -------------------------------------------------------------------------------
-Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.546 s -- in co.edu.icesi.dev.outcome_curr_mgmt.service.management.AcPeriodServiceTest
+Tests run: 23, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.213 s -- in co.edu.icesi.dev.outcome_curr_mgmt.service.management.AcPeriodServiceTest

@@ -1,6 +1,7 @@
 package co.edu.icesi.dev.outcome_curr_mgmt.config;
 
 import co.edu.icesi.dev.outcome_curr_mgmt.saamfi.filters.SaamfiAuthenticationFilter;
+import jakarta.servlet.ServletException;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -12,10 +13,10 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.http.HttpHeaders;
-
 import java.util.Collections;
 import java.util.regex.Pattern;
 
@@ -32,41 +33,52 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+
+        http.csrf(csrf -> csrf.disable());
         http.csrf(AbstractHttpConfigurer::disable);
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
-
-        // Permitir el acceso a la consola H2 y otras rutas públicas
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
+
+        String contextPath = "/outcurrapi/";
+
         http.authorizeHttpRequests(authz -> authz
-                .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()  // H2 Console
-                .requestMatchers(new AntPathRequestMatcher("/v1/auth/users/login")).permitAll()  // Login
-                .requestMatchers(new AntPathRequestMatcher("/swagger-ui/**")).permitAll()  // Swagger
-                .requestMatchers(new AntPathRequestMatcher("/v3/api-docs/**")).permitAll()  // API Docs
-                .requestMatchers(new AntPathRequestMatcher("/outcurrapi/**")).permitAll()  // Context Path
-                .requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll()  // Actuator
-                .requestMatchers(new AntPathRequestMatcher("/**")).authenticated()  // Requiere autenticación
-        );
+                .requestMatchers(new AntPathRequestMatcher(contextPath + "/actuator/**")).permitAll());
 
-        // Configurar sesión sin estado
-        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll());
+        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/h2-console/**")).permitAll());
+        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/v1/auth/users/login")).permitAll());
+        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/swagger-ui/**")).permitAll());
+        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/v3/api-docs/**")).permitAll());
 
-        // Agregar filtro personalizado (opcional durante pruebas)
+        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/v1/**")).authenticated());
+        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/**")).authenticated())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
         http.addFilterBefore(saamfiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         return request -> {
+            String origin = request.getHeader(HttpHeaders.ORIGIN);
+            Pattern pattern = Pattern.compile("https://([A-Za-z0-9-]+)\\.jcmunoz\\.net");
             CorsConfiguration configuration = new CorsConfiguration();
 
-            // Permitir todos los orígenes durante pruebas locales
-            configuration.addAllowedOriginPattern("*");
-            configuration.addAllowedMethod("*");
-            configuration.addAllowedHeader("*");
+            if (origin == null) {
+                return configuration;
+            }
 
+            if (!pattern.matcher(origin).matches()){
+                return configuration;
+            }
+
+            configuration.setAllowedOrigins(Collections.singletonList(origin));
+            configuration.setAllowedMethods(Collections.singletonList("*"));
+            configuration.setAllowedHeaders(Collections.singletonList("*"));
             return configuration;
+
         };
     }
+
 }
