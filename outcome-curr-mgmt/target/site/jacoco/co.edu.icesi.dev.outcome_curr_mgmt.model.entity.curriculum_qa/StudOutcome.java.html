@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StudOutcome.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa</a> &gt; <span class="el_source">StudOutcome.java</span></div><h1>StudOutcome.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa;
+
+import co.edu.icesi.dev.outcome_curr_mgmt.config.DataModelerGenerated;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_definition.AcadProgCurriculum;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.management.User;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.management.UsrOutcome;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import java.io.Serializable;
+import java.util.List;
+
+@Entity
+@DataModelerGenerated
+<span class="pc" id="L28">@Builder</span>
+@AllArgsConstructor
+@Table(name = &quot;STUD_OUTCOME&quot;)
+@NamedQuery(name = &quot;StudOutcome.findAll&quot;, query = &quot;SELECT s FROM StudOutcome s&quot;)
+public class StudOutcome implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name = &quot;STUD_OUTCOME_SOID_GENERATOR&quot;, allocationSize = 1, sequenceName = &quot;STUD_OUTCOME_SEQ&quot;)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;STUD_OUTCOME_SOID_GENERATOR&quot;)
+    @Column(name = &quot;SO_ID&quot;)
+    private long soId;
+
+    @Column(name = &quot;SO_ACRONYM&quot;)
+    private String soAcronym;
+
+    @Column(name = &quot;SO_IS_ACTIVE&quot;)
+    private char soIsActive;
+
+    @Column(name = &quot;SO_LONG_NAME_ENG&quot;, length = 1000)
+    private String soLongNameEng;
+
+    @Column(name = &quot;SO_LONG_NAME_SPA&quot;, length = 1000)
+    private String soLongNameSpa;
+
+    @Column(name = &quot;SO_ORDINAL_NUMBER&quot;)
+    private int soOrdinalNumber;
+
+    @Column(name = &quot;SO_SHORT_NAME_ENG&quot;)
+    private String soShortNameEng;
+
+    @Column(name = &quot;SO_SHORT_NAME_SPA&quot;)
+    private String soShortNameSpa;
+
+    //bi-directional many-to-one association to AssmtPlanOut
+    @OneToMany(mappedBy = &quot;studOutcome&quot;)
+    private List&lt;AssmtPlanOut&gt; assmtPlanOuts;
+
+    //bi-directional many-to-one association to PerfIndicator
+    @OneToMany(mappedBy = &quot;studOutcome&quot;)
+    private List&lt;PerfIndicator&gt; perfIndicators;
+
+    //bi-directional many-to-many association to AcadProgCurriculum
+    @ManyToMany
+    @JoinTable(
+            name = &quot;ACPCU_SO&quot;
+            , joinColumns = {
+            @JoinColumn(name = &quot;SO_SO_ID&quot;)
+    }
+            , inverseJoinColumns = {
+            @JoinColumn(name = &quot;ACADP_CUR_APC_ID&quot;)
+    }
+    )
+    private List&lt;AcadProgCurriculum&gt; acadProgCurriculums;
+
+    //bi-directional many-to-one association to AssmtGenPlan
+    @ManyToOne
+    @JoinColumn(name = &quot;AGENP_ASGPLA_ID&quot;)
+    private AssmtGenPlan assmtGenPlan;
+
+    //bi-directional many-to-many association to User
+    @ManyToMany(mappedBy = &quot;studOutcomes&quot;)
+    private List&lt;User&gt; users;
+
+    //bi-directional many-to-one association to UsrOutcome
+    @OneToMany(mappedBy = &quot;studOutcome&quot;)
+    private List&lt;UsrOutcome&gt; usrOutcomes;
+
+    public StudOutcome() {
+        //Entity constructor
+    }
+
+    public long getSoId() {
+        return this.soId;
+    }
+
+    public void setSoId(long soId) {
+        this.soId = soId;
+    }
+
+    public String getSoAcronym() {
+        return this.soAcronym;
+    }
+
+    public void setSoAcronym(String soAcronym) {
+        this.soAcronym = soAcronym;
+    }
+
+    public char getSoIsActive() {
+        return this.soIsActive;
+    }
+
+    public void setSoIsActive(char soIsActive) {
+        this.soIsActive = soIsActive;
+    }
+
+    public String getSoLongNameEng() {
+        return this.soLongNameEng;
+    }
+
+    public void setSoLongNameEng(String soLongNameEng) {
+        this.soLongNameEng = soLongNameEng;
+    }
+
+    public String getSoLongNameSpa() {
+        return this.soLongNameSpa;
+    }
+
+    public void setSoLongNameSpa(String soLongNameSpa) {
+        this.soLongNameSpa = soLongNameSpa;
+    }
+
+    public int getSoOrdinalNumber() {
+        return this.soOrdinalNumber;
+    }
+
+    public void setSoOrdinalNumber(int soOrdinalNumber) {
+        this.soOrdinalNumber = soOrdinalNumber;
+    }
+
+    public String getSoShortNameEng() {
+        return this.soShortNameEng;
+    }
+
+    public void setSoShortNameEng(String soShortNameEng) {
+        this.soShortNameEng = soShortNameEng;
+    }
+
+    public String getSoShortNameSpa() {
+        return this.soShortNameSpa;
+    }
+
+    public void setSoShortNameSpa(String soShortNameSpa) {
+        this.soShortNameSpa = soShortNameSpa;
+    }
+
+    public List&lt;AssmtPlanOut&gt; getAssmtPlanOuts() {
+        return this.assmtPlanOuts;
+    }
+
+    public void setAssmtPlanOuts(List&lt;AssmtPlanOut&gt; assmtPlanOuts) {
+        this.assmtPlanOuts = assmtPlanOuts;
+    }
+
+    public AssmtPlanOut addAssmtPlanOut(AssmtPlanOut assmtPlanOut) {
+        getAssmtPlanOuts().add(assmtPlanOut);
+        assmtPlanOut.setStudOutcome(this);
+
+        return assmtPlanOut;
+    }
+
+    public AssmtPlanOut removeAssmtPlanOut(AssmtPlanOut assmtPlanOut) {
+        getAssmtPlanOuts().remove(assmtPlanOut);
+        assmtPlanOut.setStudOutcome(null);
+
+        return assmtPlanOut;
+    }
+
+    public List&lt;PerfIndicator&gt; getPerfIndicators() {
+        return this.perfIndicators;
+    }
+
+    public void setPerfIndicators(List&lt;PerfIndicator&gt; perfIndicators) {
+        this.perfIndicators = perfIndicators;
+    }
+
+    public PerfIndicator addPerfIndicator(PerfIndicator perfIndicator) {
+        getPerfIndicators().add(perfIndicator);
+        perfIndicator.setStudOutcome(this);
+
+        return perfIndicator;
+    }
+
+    public PerfIndicator removePerfIndicator(PerfIndicator perfIndicator) {
+        getPerfIndicators().remove(perfIndicator);
+        perfIndicator.setStudOutcome(null);
+
+        return perfIndicator;
+    }
+
+    public List&lt;AcadProgCurriculum&gt; getAcadProgCurriculums() {
+        return this.acadProgCurriculums;
+    }
+
+    public void setAcadProgCurriculums(List&lt;AcadProgCurriculum&gt; acadProgCurriculums) {
+        this.acadProgCurriculums = acadProgCurriculums;
+    }
+
+    public AssmtGenPlan getAssmtGenPlan() {
+        return this.assmtGenPlan;
+    }
+
+    public void setAssmtGenPlan(AssmtGenPlan assmtGenPlan) {
+        this.assmtGenPlan = assmtGenPlan;
+    }
+
+    public List&lt;User&gt; getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(List&lt;User&gt; users) {
+        this.users = users;
+    }
+
+    public List&lt;UsrOutcome&gt; getUsrOutcomes() {
+        return this.usrOutcomes;
+    }
+
+    public void setUsrOutcomes(List&lt;UsrOutcome&gt; usrOutcomes) {
+        this.usrOutcomes = usrOutcomes;
+    }
+
+    public UsrOutcome addUsrOutcome(UsrOutcome usrOutcome) {
+        getUsrOutcomes().add(usrOutcome);
+        usrOutcome.setStudOutcome(this);
+
+        return usrOutcome;
+    }
+
+    public UsrOutcome removeUsrOutcome(UsrOutcome usrOutcome) {
+        getUsrOutcomes().remove(usrOutcome);
+        usrOutcome.setStudOutcome(null);
+
+        return usrOutcome;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

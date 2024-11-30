@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SaamfiClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.saamfi.delegate</a> &gt; <span class="el_source">SaamfiClient.java</span></div><h1>SaamfiClient.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.saamfi.delegate;
+
+import co.edu.icesi.dev.outcome_curr.mgmt.model.stdindto.management.LoginInDTO;
+import co.edu.icesi.dev.outcome_curr.mgmt.model.stdoutdto.management.LoginOutDTO;
+import co.edu.icesi.dev.outcome_curr_mgmt.exception.OutCurrException;
+import co.edu.icesi.dev.outcome_curr_mgmt.exception.OutCurrExceptionType;
+import lombok.Getter;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.hibernate.cfg.Environment;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.security.KeyFactory;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
+
+@Component
+public class SaamfiClient {
+    //TODO add test coverage
+<span class="fc" id="L30">    protected final Log logger = LogFactory.getLog(this.getClass());</span>
+    private final String saamfiUrl;
+    private final String systemId;
+    private final String institutionId;
+    private RestTemplate template;
+
+<span class="fc" id="L36">    @Getter</span>
+    private PublicKey publicKey;
+
+    public SaamfiClient(@Value(&quot;${saamfi.url}&quot;) final String saamfiUrl,
+            @Value(&quot;${saamfi.system.id}&quot;) final String system_id,
+<span class="fc" id="L41">            @Value(&quot;${saamfi.institution.id}&quot;) final String institution_id) {</span>
+<span class="fc" id="L42">        this.saamfiUrl = saamfiUrl;</span>
+<span class="fc" id="L43">        this.systemId = system_id;</span>
+<span class="fc" id="L44">        this.institutionId = institution_id;</span>
+<span class="fc" id="L45">        template = new RestTemplate();</span>
+
+        try {
+<span class="fc" id="L48">            publicKey = getRemotePublicKey();</span>
+
+<span class="nc" id="L50">        } catch (Exception e) {</span>
+<span class="nc" id="L51">            logger.error(e.getStackTrace());</span>
+<span class="fc" id="L52">        }</span>
+<span class="fc" id="L53">    }</span>
+
+    public PublicKey getRemotePublicKey() throws InvalidKeySpecException, NoSuchAlgorithmException {
+<span class="fc" id="L56">        String key = template.getForEntity(saamfiUrl + &quot;/public/publicKey&quot;, String.class).getBody();</span>
+<span class="pc bpc" id="L57" title="1 of 2 branches missed.">        if (key != null) {</span>
+<span class="fc" id="L58">            key = key.replace(&quot;[&quot;, &quot;&quot;);</span>
+<span class="fc" id="L59">            key = key.replace(&quot;]&quot;, &quot;&quot;);</span>
+<span class="fc" id="L60">            String[] split = key.split(&quot;,&quot;);</span>
+<span class="fc" id="L61">            byte[] bytes = new byte[split.length];</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            for (int i = 0; i &lt; bytes.length; i++) {</span>
+<span class="fc" id="L63">                bytes[i] = Byte.parseByte(split[i].trim());</span>
+
+            }
+<span class="fc" id="L66">            X509EncodedKeySpec spec = new X509EncodedKeySpec(bytes);</span>
+<span class="fc" id="L67">            KeyFactory kf = KeyFactory.getInstance(&quot;RSA&quot;);</span>
+<span class="fc" id="L68">            return kf.generatePublic(spec);</span>
+        }
+<span class="nc" id="L70">        return null;</span>
+    }
+
+    public PublicKey getRemotePublicKey(String filename)
+            throws InvalidKeySpecException, IOException, NoSuchAlgorithmException {
+<span class="nc" id="L75">        byte[] keyBytes = null;</span>
+        String externalPath =
+<span class="nc" id="L77">                Environment.getProperties().getProperty(&quot;catalina.home&quot;) + File.separator + &quot;conf&quot; + File.separator</span>
+                        + &quot;uccare&quot; + File.separator + filename;
+        try {
+<span class="nc" id="L80">            File file = ResourceUtils.getFile(externalPath);</span>
+<span class="nc" id="L81">            keyBytes = Files.readAllBytes(file.toPath());</span>
+<span class="nc" id="L82">        } catch (Exception e2) {</span>
+            try {
+<span class="nc" id="L84">                File file = ResourceUtils.getFile(ResourceUtils.CLASSPATH_URL_PREFIX + filename);</span>
+<span class="nc" id="L85">                keyBytes = Files.readAllBytes(file.toPath());</span>
+<span class="nc" id="L86">            } catch (Exception e) {</span>
+
+<span class="nc" id="L88">                keyBytes = Files.readAllBytes(Paths.get(filename));</span>
+<span class="nc" id="L89">            }</span>
+<span class="nc" id="L90">        }</span>
+
+<span class="nc" id="L92">        X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);</span>
+<span class="nc" id="L93">        KeyFactory kf = KeyFactory.getInstance(&quot;RSA&quot;);</span>
+<span class="nc" id="L94">        return kf.generatePublic(spec);</span>
+    }
+
+    public LoginOutDTO getUserLogin(LoginInDTO loginInDTO) {
+<span class="fc" id="L98">        String endpoint = String.format(&quot;/public/institutions/%s/systems/%s/users/login&quot;, institutionId, systemId);</span>
+        try {
+<span class="fc" id="L100">            return template.postForEntity(saamfiUrl + endpoint, loginInDTO, LoginOutDTO.class).getBody();</span>
+<span class="fc" id="L101">        } catch (HttpClientErrorException e) {</span>
+<span class="fc" id="L102">            throw new OutCurrException(OutCurrExceptionType.USER_INVALID_CREDENTIALS);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

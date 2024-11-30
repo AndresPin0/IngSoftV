@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalControllerAdvice.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.exception</a> &gt; <span class="el_source">GlobalControllerAdvice.java</span></div><h1>GlobalControllerAdvice.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.exception;
+
+import co.edu.icesi.dev.outcome_curr_mgmt.model.enums.InfoError;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.response.OutcomeCurrApplicationError;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.response.OutcomeCurrApplicationErrorDetail;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+@RestControllerAdvice
+<span class="fc" id="L27">public class GlobalControllerAdvice extends ResponseEntityExceptionHandler {</span>
+
+
+  @ExceptionHandler(value = {OutCurrException.class})
+  public ResponseEntity&lt;OutcomeCurrApplicationError&gt; handleOutCurrException(
+          OutCurrException outCurrException) {
+<span class="fc" id="L33">    OutcomeCurrApplicationError body = OutcomeCurrApplicationError.builder()</span>
+<span class="fc" id="L34">        .code(outCurrException.getOutCurrExceptionType().getCode()+&quot;&quot;)</span>
+<span class="fc" id="L35">        .message(outCurrException.getMessage())</span>
+<span class="fc" id="L36">        .status(outCurrException.getOutCurrExceptionType().getResponseStatus())</span>
+<span class="fc" id="L37">        .time(LocalDateTime.now())</span>
+<span class="fc" id="L38">        .build();</span>
+
+<span class="fc" id="L40">    return new ResponseEntity&lt;&gt;(body, body.getStatus());</span>
+  }
+
+  @Override
+  protected ResponseEntity&lt;Object&gt; handleMissingPathVariable
+      (MissingPathVariableException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+<span class="nc" id="L46">    OutcomeCurrApplicationError body = OutcomeCurrApplicationError.builder()</span>
+<span class="nc" id="L47">        .code(InfoError.MISSING_PATH_VARIABLE.getCode())</span>
+<span class="nc" id="L48">        .message(ex.getVariableName() + InfoError.MISSING_PATH_VARIABLE.getMessage())</span>
+<span class="nc" id="L49">        .status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L50">        .time(LocalDateTime.now())</span>
+<span class="nc" id="L51">        .build();</span>
+
+<span class="nc" id="L53">    return new ResponseEntity&lt;&gt;(body, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  @Override
+  protected ResponseEntity&lt;Object&gt; handleMissingServletRequestParameter
+      (MissingServletRequestParameterException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+<span class="nc" id="L59">    OutcomeCurrApplicationError body = OutcomeCurrApplicationError.builder()</span>
+<span class="nc" id="L60">        .code(InfoError.MISSING_REQUEST_PARAMETER.getCode())</span>
+<span class="nc" id="L61">        .message(ex.getParameterName() + InfoError.MISSING_REQUEST_PARAMETER.getMessage())</span>
+<span class="nc" id="L62">        .status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L63">        .time(LocalDateTime.now())</span>
+<span class="nc" id="L64">        .build();</span>
+
+<span class="nc" id="L66">    return new ResponseEntity&lt;&gt;(body, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  @Override
+  protected ResponseEntity&lt;Object&gt; handleMethodArgumentNotValid
+      (MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+<span class="nc" id="L72">    OutcomeCurrApplicationErrorDetail error = OutcomeCurrApplicationErrorDetail.builder()</span>
+<span class="nc" id="L73">        .code(InfoError.ARGUMENT_NOT_VALID.getCode())</span>
+<span class="nc" id="L74">        .message(InfoError.ARGUMENT_NOT_VALID.getMessage())</span>
+<span class="nc" id="L75">        .status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L76">        .time(LocalDateTime.now())</span>
+<span class="nc" id="L77">        .detail(formatDetailMessage(ex.getFieldErrors()))</span>
+<span class="nc" id="L78">        .build();</span>
+<span class="nc" id="L79">    return new ResponseEntity&lt;&gt;(error, HttpStatus.BAD_REQUEST);</span>
+  }
+
+  private static String formatDetailMessage(List&lt;FieldError&gt; errors) {
+<span class="nc" id="L83">    StringBuilder detailBuilder = new StringBuilder();</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">    if (!errors.isEmpty()) {</span>
+<span class="nc bnc" id="L85" title="All 2 branches missed.">      for (int i = 0; i &lt; errors.size(); i++) {</span>
+<span class="nc" id="L86">        detailBuilder.append(&quot;Error &quot;).append(i + 1).append(&quot;: {&quot;).append(errors.get(i).getDefaultMessage() + &quot;} &quot;);</span>
+      }
+    }
+<span class="nc" id="L89">    return detailBuilder.toString();</span>
+  }
+
+  @ExceptionHandler(ConstraintViolationException.class)
+  public ResponseEntity&lt;OutcomeCurrApplicationErrorDetail&gt; handleConstraintViolation(ConstraintViolationException ex) {
+
+<span class="nc" id="L95">    OutcomeCurrApplicationErrorDetail body = OutcomeCurrApplicationErrorDetail.builder()</span>
+<span class="nc" id="L96">        .code(InfoError.CONSTRAIN_VIOLATION.getCode())</span>
+<span class="nc" id="L97">        .message(InfoError.CONSTRAIN_VIOLATION.getMessage())</span>
+<span class="nc" id="L98">        .status(HttpStatus.UNPROCESSABLE_ENTITY)</span>
+<span class="nc" id="L99">        .detail(buildValidationErrors(ex.getConstraintViolations()))</span>
+<span class="nc" id="L100">        .time(LocalDateTime.now())</span>
+<span class="nc" id="L101">        .build();</span>
+<span class="nc" id="L102">    return new ResponseEntity&lt;&gt;(body, HttpStatus.UNPROCESSABLE_ENTITY);</span>
+  }
+
+  private static String buildValidationErrors(
+      Set&lt;ConstraintViolation&lt;?&gt;&gt; violations) {
+<span class="nc" id="L107">    return violations.stream()</span>
+<span class="nc" id="L108">        .map(ConstraintViolation::getMessage)</span>
+<span class="nc" id="L109">        .collect(Collectors.joining(&quot;; &quot;));</span>
+  }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

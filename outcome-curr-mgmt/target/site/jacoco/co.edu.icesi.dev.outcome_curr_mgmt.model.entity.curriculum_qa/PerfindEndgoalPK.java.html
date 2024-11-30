@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PerfindEndgoalPK.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa</a> &gt; <span class="el_source">PerfindEndgoalPK.java</span></div><h1>PerfindEndgoalPK.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa;
+
+import co.edu.icesi.dev.outcome_curr_mgmt.config.DataModelerGenerated;
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import java.io.Serializable;
+
+@Embeddable
+@DataModelerGenerated
+<span class="nc" id="L13">@Builder</span>
+@AllArgsConstructor
+public class PerfindEndgoalPK implements Serializable {
+    //default serial version id, required for serializable classes.
+    private static final long serialVersionUID = 1L;
+
+    @Column(name = &quot;PI_PI_ID&quot;, insertable = false, updatable = false)
+    private long piPiId;
+
+    @Column(name = &quot;EGOAL_EG_ID&quot;, insertable = false, updatable = false)
+    private long egoalEgId;
+
+    public PerfindEndgoalPK() {
+        //Entity constructor
+    }
+
+    public long getPiPiId() {
+        return this.piPiId;
+    }
+
+    public void setPiPiId(long piPiId) {
+        this.piPiId = piPiId;
+    }
+
+    public long getEgoalEgId() {
+        return this.egoalEgId;
+    }
+
+    public void setEgoalEgId(long egoalEgId) {
+        this.egoalEgId = egoalEgId;
+    }
+
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof PerfindEndgoalPK)) {
+            return false;
+        }
+        PerfindEndgoalPK castOther = (PerfindEndgoalPK) other;
+        return
+                (this.piPiId == castOther.piPiId)
+                        &amp;&amp; (this.egoalEgId == castOther.egoalEgId);
+    }
+
+    public int hashCode() {
+        final int prime = 31;
+        int hash = 17;
+        hash = hash * prime + ((int) (this.piPiId ^ (this.piPiId &gt;&gt;&gt; 32)));
+        hash = hash * prime + ((int) (this.egoalEgId ^ (this.egoalEgId &gt;&gt;&gt; 32)));
+
+        return hash;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

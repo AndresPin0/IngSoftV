@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BannerFacultyServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.service.banner</a> &gt; <span class="el_source">BannerFacultyServiceImpl.java</span></div><h1>BannerFacultyServiceImpl.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.service.banner;
+
+import co.edu.icesi.dev.outcome_curr.mgmt.model.stdindto.faculty.FacultyInDTO;
+import co.edu.icesi.dev.outcome_curr.mgmt.model.stdoutdto.faculty.FacultyOutDTO;
+import co.edu.icesi.dev.outcome_curr_mgmt.academic_registry.client.BannerAPI;
+import co.edu.icesi.dev.outcome_curr_mgmt.exception.OutCurrException;
+import co.edu.icesi.dev.outcome_curr_mgmt.exception.OutCurrExceptionType;
+import co.edu.icesi.dev.outcome_curr_mgmt.mapper.faculty.FacultyMapper;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.faculty.FacultyServiceImpl;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.provider.faculty.FacultyProvider;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.validator.faculty.FacultyValidator;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.validator.faculty.UserPermAccess;
+import io.micrometer.core.instrument.Metrics;
+import io.micrometer.core.instrument.Counter;
+import io.micrometer.core.instrument.Timer;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+<span class="fc" id="L29">@RequiredArgsConstructor</span>
+public class BannerFacultyServiceImpl implements BannerFacultyService {
+<span class="fc" id="L31">    private static final Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);</span>
+    private final FacultyValidator facultyValidator;
+    private final FacultyMapper facultyMapper;
+    private final FacultyProvider facultyProvider;
+    private final BannerAPI bannerAPI;
+
+    // Metric counters
+<span class="fc" id="L38">    private static final Counter facultiesQueryCounter = Metrics.counter(&quot;banner.faculty.query.count&quot;);</span>
+<span class="fc" id="L39">    private static final Counter facultiesImportCounter = Metrics.counter(&quot;banner.faculty.import.count&quot;);</span>
+
+    // Metric timers
+<span class="fc" id="L42">    private static final Timer getFacultiesTimer = Metrics.timer(&quot;banner.faculty.get.time&quot;);</span>
+<span class="fc" id="L43">    private static final Timer getFacultiesPageTimer = Metrics.timer(&quot;banner.faculty.page.get.time&quot;);</span>
+<span class="fc" id="L44">    private static final Timer importFacultiesTimer = Metrics.timer(&quot;banner.faculty.import.time&quot;);</span>
+
+    @Transactional
+    @Override
+    public List&lt;FacultyOutDTO&gt; getBannerFaculties() {
+<span class="fc" id="L49">        logger.info(&quot;Getting faculties from Banner&quot;);</span>
+<span class="fc" id="L50">        Timer.Sample sample = Timer.start();</span>
+        try {
+<span class="fc" id="L52">            validateAccess(0L, UserPermAccess.QUERY);</span>
+<span class="fc" id="L53">            List&lt;FacultyInDTO&gt; facultiesList = bannerAPI.getFacultiesList();</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">            if (facultiesList.isEmpty()) {</span>
+<span class="fc" id="L55">                logger.error(&quot;There are no faculties in Banner.&quot;);</span>
+<span class="fc" id="L56">                throw new OutCurrException(OutCurrExceptionType.FACULTY_NOT_FOUND);</span>
+            }
+<span class="fc" id="L58">            facultiesQueryCounter.increment();</span>
+<span class="fc" id="L59">            return facultiesList.stream()</span>
+<span class="fc" id="L60">                    .map(facultyMapper::facultyInDTOToFacultyOutDTO)</span>
+<span class="fc" id="L61">                    .collect(Collectors.toList());</span>
+        } finally {
+<span class="fc" id="L63">            sample.stop(getFacultiesTimer);</span>
+        }
+    }
+
+    @Transactional
+    @Override
+    public Page&lt;FacultyOutDTO&gt; getBannerFacultiesPage(int page, int size) {
+<span class="fc" id="L70">        logger.info(&quot;Getting faculties from banner in pages&quot;);</span>
+<span class="fc" id="L71">        Timer.Sample sample = Timer.start();</span>
+        try {
+<span class="fc" id="L73">            validateAccess(0L, UserPermAccess.QUERY);</span>
+<span class="fc" id="L74">            Page&lt;FacultyInDTO&gt; bannerFacultyInDTOS = bannerAPI.getFacultiesPage(page, size);</span>
+<span class="fc bfc" id="L75" title="All 2 branches covered.">            if (bannerFacultyInDTOS.getContent().isEmpty()) {</span>
+<span class="fc" id="L76">                logger.error(&quot;There are no faculties on this page.&quot;);</span>
+<span class="fc" id="L77">                throw new OutCurrException(OutCurrExceptionType.FACULTY_NOT_FOUND);</span>
+            }
+<span class="fc" id="L79">            return new PageImpl&lt;&gt;(</span>
+<span class="fc" id="L80">                    bannerFacultyInDTOS.stream()</span>
+<span class="fc" id="L81">                            .map(facultyMapper::facultyInDTOToFacultyOutDTO)</span>
+<span class="fc" id="L82">                            .collect(Collectors.toList()),</span>
+<span class="fc" id="L83">                    PageRequest.of(bannerFacultyInDTOS.getNumber(), bannerFacultyInDTOS.getSize()),</span>
+<span class="fc" id="L84">                    bannerFacultyInDTOS.getTotalElements()</span>
+            );
+        } finally {
+<span class="fc" id="L87">            sample.stop(getFacultiesPageTimer);</span>
+        }
+    }
+
+    @Transactional
+    @Override
+    public List&lt;FacultyOutDTO&gt; importBannerFaculties(List&lt;String&gt; facultiesNames) {
+<span class="fc" id="L94">        validateAccess(0L, UserPermAccess.ADMIN);</span>
+<span class="fc" id="L95">        logger.info(&quot;Importing faculties into db.&quot;);</span>
+<span class="fc" id="L96">        Timer.Sample sample = Timer.start();</span>
+        try {
+<span class="fc" id="L98">            facultiesImportCounter.increment();</span>
+<span class="fc" id="L99">            return bannerAPI.importFaculties(facultiesNames).stream()</span>
+<span class="fc" id="L100">                    .map(facultyProvider::saveFaculty)</span>
+<span class="fc" id="L101">                    .toList();</span>
+        } finally {
+<span class="fc" id="L103">            sample.stop(importFacultiesTimer);</span>
+        }
+    }
+
+    private void validateAccess(long facultyId, UserPermAccess permAccess) {
+<span class="fc" id="L108">        logger.info(&quot;Checking permissions to execute this operation.&quot;);</span>
+<span class="fc" id="L109">        facultyValidator.enforceUsrFacForFaculty(facultyId, permAccess);</span>
+<span class="fc" id="L110">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

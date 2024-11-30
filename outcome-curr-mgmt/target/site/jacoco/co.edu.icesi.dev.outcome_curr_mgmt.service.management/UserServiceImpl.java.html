@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.service.management</a> &gt; <span class="el_source">UserServiceImpl.java</span></div><h1>UserServiceImpl.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.service.management;
+
+import co.edu.icesi.dev.outcome_curr.mgmt.model.stdindto.management.LoginInDTO;
+import co.edu.icesi.dev.outcome_curr.mgmt.model.stdoutdto.management.LoginOutDTO;
+import co.edu.icesi.dev.outcome_curr_mgmt.exception.OutCurrException;
+import co.edu.icesi.dev.outcome_curr_mgmt.exception.OutCurrExceptionType;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.management.User;
+import co.edu.icesi.dev.outcome_curr_mgmt.persistence.management.UserRepository;
+import co.edu.icesi.dev.outcome_curr_mgmt.saamfi.delegate.SaamfiClient;
+import co.edu.icesi.dev.outcome_curr_mgmt.saamfi.util.SaamfiJwtTools;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+
+@Service
+<span class="fc" id="L17">@RequiredArgsConstructor</span>
+public class UserServiceImpl implements UserService {
+    //TODO add test coverage
+    private final UserRepository userRepository;
+    private final SaamfiClient saamfiClient;
+    private final SaamfiJwtTools saamfiJwtTools;
+
+    @Transactional
+    @Override
+    public LoginOutDTO login(LoginInDTO loginInDTO) {
+<span class="fc" id="L27">        LoginOutDTO loginOutDTO = saamfiClient.getUserLogin(loginInDTO);</span>
+
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">        if (!saamfiJwtTools.tokenHasPermission(loginOutDTO.accessToken(), &quot;ROLE_Access-system&quot;)){</span>
+<span class="nc" id="L30">            throw new OutCurrException(OutCurrExceptionType.USER_INVALID_PERMISSIONS);</span>
+        }
+
+<span class="pc bpc" id="L33" title="1 of 2 branches missed.">        if (userRepository.findById(loginOutDTO.userId()).isEmpty()){</span>
+<span class="fc" id="L34">            User userEntity = User.builder()</span>
+<span class="fc" id="L35">                    .usrId(loginOutDTO.userId())</span>
+<span class="fc" id="L36">                    .usrName(loginOutDTO.userName() + &quot; &quot; + loginOutDTO.userLastname())</span>
+<span class="fc" id="L37">                    .usrEmail(loginOutDTO.userEmail())</span>
+<span class="fc" id="L38">                    .usrIsActive('Y')</span>
+<span class="fc" id="L39">                    .build();</span>
+<span class="fc" id="L40">            userRepository.save(userEntity);</span>
+        }
+
+<span class="fc" id="L43">        return loginOutDTO;</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

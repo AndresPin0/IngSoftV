@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssmtPlanPi.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa</a> &gt; <span class="el_source">AssmtPlanPi.java</span></div><h1>AssmtPlanPi.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa;
+
+import co.edu.icesi.dev.outcome_curr_mgmt.config.DataModelerGenerated;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.management.User;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import java.io.Serializable;
+
+@Entity
+@DataModelerGenerated
+<span class="nc" id="L22">@Builder</span>
+@AllArgsConstructor
+@Table(name = &quot;ASSMT_PLAN_PI&quot;)
+@NamedQuery(name = &quot;AssmtPlanPi.findAll&quot;, query = &quot;SELECT a FROM AssmtPlanPi a&quot;)
+public class AssmtPlanPi implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name = &quot;ASSMT_PLAN_PI_ASPNPIID_GENERATOR&quot;, allocationSize = 1, sequenceName = &quot;ASSMT_PLAN_PI_SEQ&quot;)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;ASSMT_PLAN_PI_ASPNPIID_GENERATOR&quot;)
+    @Column(name = &quot;ASPNPI_ID&quot;)
+    private long aspnpiId;
+
+    @Column(name = &quot;ASPNPI_ASSESSMENT_METHOD&quot;)
+    private String aspnpiAssessmentMethod;
+
+    @Column(name = &quot;ASPNPI_FILE_URL&quot;)
+    private String aspnpiFileUrl;
+
+    //bi-directional many-to-one association to AssmtPlanOut
+    @ManyToOne
+    @JoinColumn(name = &quot;APLANOUT_ASPNOUT_ID&quot;)
+    private AssmtPlanOut assmtPlanOut;
+
+    //bi-directional many-to-one association to PerfIndicator
+    @ManyToOne
+    @JoinColumn(name = &quot;PI_PI_ID&quot;)
+    private PerfIndicator perfIndicator;
+
+    //bi-directional many-to-one association to User
+    @ManyToOne
+    @JoinColumn(name = &quot;USR_USR_ID&quot;)
+    private User user;
+
+    public AssmtPlanPi() {
+        //Entity constructor
+    }
+
+    public long getAspnpiId() {
+        return this.aspnpiId;
+    }
+
+    public void setAspnpiId(long aspnpiId) {
+        this.aspnpiId = aspnpiId;
+    }
+
+    public String getAspnpiAssessmentMethod() {
+        return this.aspnpiAssessmentMethod;
+    }
+
+    public void setAspnpiAssessmentMethod(String aspnpiAssessmentMethod) {
+        this.aspnpiAssessmentMethod = aspnpiAssessmentMethod;
+    }
+
+    public String getAspnpiFileUrl() {
+        return this.aspnpiFileUrl;
+    }
+
+    public void setAspnpiFileUrl(String aspnpiFileUrl) {
+        this.aspnpiFileUrl = aspnpiFileUrl;
+    }
+
+    public AssmtPlanOut getAssmtPlanOut() {
+        return this.assmtPlanOut;
+    }
+
+    public void setAssmtPlanOut(AssmtPlanOut assmtPlanOut) {
+        this.assmtPlanOut = assmtPlanOut;
+    }
+
+    public PerfIndicator getPerfIndicator() {
+        return this.perfIndicator;
+    }
+
+    public void setPerfIndicator(PerfIndicator perfIndicator) {
+        this.perfIndicator = perfIndicator;
+    }
+
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssmtPlanSubcyclev.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa</a> &gt; <span class="el_source">AssmtPlanSubcyclev.java</span></div><h1>AssmtPlanSubcyclev.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa;
+
+import co.edu.icesi.dev.outcome_curr_mgmt.config.DataModelerGenerated;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.management.AcPeriod;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import java.io.Serializable;
+import java.util.List;
+
+@Entity
+@DataModelerGenerated
+<span class="nc" id="L24">@Builder</span>
+@AllArgsConstructor
+@Table(name = &quot;ASSMT_PLAN_SUBCYCLEV&quot;)
+@NamedQuery(name = &quot;AssmtPlanSubcyclev.findAll&quot;, query = &quot;SELECT a FROM AssmtPlanSubcyclev a&quot;)
+public class AssmtPlanSubcyclev implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name = &quot;ASSMT_PLAN_SUBCYCLEV_ASGPLASUBCYCLEID_GENERATOR&quot;, allocationSize = 1, sequenceName = &quot;ASSMT_PLAN_SUBCYCLEV_SEQ&quot;)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;ASSMT_PLAN_SUBCYCLEV_ASGPLASUBCYCLEID_GENERATOR&quot;)
+    @Column(name = &quot;ASGPLASUBCYCLE_ID&quot;)
+    private long asgplasubcycleId;
+
+    //bi-directional many-to-one association to AssmtPlanOut
+    @OneToMany(mappedBy = &quot;assmtPlanSubcyclev&quot;)
+    private List&lt;AssmtPlanOut&gt; assmtPlanOuts;
+
+    //bi-directional many-to-one association to AcPeriod
+    @ManyToOne
+    @JoinColumn(name = &quot;AP_AC_PERIOD_ID&quot;)
+    private AcPeriod acPeriod;
+
+    //bi-directional many-to-one association to AssmtPlanCycle
+    @ManyToOne
+    @JoinColumn(name = &quot;APLANC_ASGPLACYCLE_ID&quot;)
+    private AssmtPlanCycle assmtPlanCycle;
+
+    public AssmtPlanSubcyclev() {
+        //Entity constructor
+    }
+
+    public long getAsgplasubcycleId() {
+        return this.asgplasubcycleId;
+    }
+
+    public void setAsgplasubcycleId(long asgplasubcycleId) {
+        this.asgplasubcycleId = asgplasubcycleId;
+    }
+
+    public List&lt;AssmtPlanOut&gt; getAssmtPlanOuts() {
+        return this.assmtPlanOuts;
+    }
+
+    public void setAssmtPlanOuts(List&lt;AssmtPlanOut&gt; assmtPlanOuts) {
+        this.assmtPlanOuts = assmtPlanOuts;
+    }
+
+    public AssmtPlanOut addAssmtPlanOut(AssmtPlanOut assmtPlanOut) {
+        getAssmtPlanOuts().add(assmtPlanOut);
+        assmtPlanOut.setAssmtPlanSubcyclev(this);
+
+        return assmtPlanOut;
+    }
+
+    public AssmtPlanOut removeAssmtPlanOut(AssmtPlanOut assmtPlanOut) {
+        getAssmtPlanOuts().remove(assmtPlanOut);
+        assmtPlanOut.setAssmtPlanSubcyclev(null);
+
+        return assmtPlanOut;
+    }
+
+    public AcPeriod getAcPeriod() {
+        return this.acPeriod;
+    }
+
+    public void setAcPeriod(AcPeriod acPeriod) {
+        this.acPeriod = acPeriod;
+    }
+
+    public AssmtPlanCycle getAssmtPlanCycle() {
+        return this.assmtPlanCycle;
+    }
+
+    public void setAssmtPlanCycle(AssmtPlanCycle assmtPlanCycle) {
+        this.assmtPlanCycle = assmtPlanCycle;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
