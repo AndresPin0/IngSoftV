@@ -64,9 +64,11 @@ public class SaamfiAuthenticationFilter extends OncePerRequestFilter {
 				|| relativePath.startsWith("/h2-console/")
 				|| relativePath.startsWith("/v1/auth/users/login")
 				|| relativePath.startsWith("/swagger-ui/")
-				|| relativePath.startsWith("/v3/api-docs/");
+				|| relativePath.startsWith("/v3/api-docs/")
+				|| relativePath.startsWith("/v1/courses/")
+				|| relativePath.startsWith("/v1/faculties/");;
 
-		logger.debug("shouldNotFilter: " + shouldNotFilter);
+		logger.debug("shouldNotFilter: " + shouldNotFilter );
 
 		return shouldNotFilter;
 	}

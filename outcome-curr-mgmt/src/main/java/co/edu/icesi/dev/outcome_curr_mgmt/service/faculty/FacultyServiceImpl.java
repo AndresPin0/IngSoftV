@@ -14,11 +14,13 @@ import co.edu.icesi.dev.outcome_curr_mgmt.service.validator.faculty.UserPermAcce
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +33,25 @@ public class FacultyServiceImpl implements FacultyService {
     @Override
     @Transactional
     public FacultyOutDTO createFaculty(FacultyInDTO facultyInDTO) {
-        return facultyProvider.saveFaculty(facultyInDTO);
+        MDC.put("operation", "createFaculty");
+        MDC.put("transactionId", UUID.randomUUID().toString());
+        MDC.put("userId", getCurrentUserId());
+        logger.info("Creating a new faculty with name: {}", facultyInDTO.facNameEng());
+
+        try {
+            FacultyOutDTO result = facultyProvider.saveFaculty(facultyInDTO);
+            logger.info("Successfully created faculty with ID: {}", result.facId());
+            return result;
+        } catch (Exception e) {
+            logger.error("Error while creating faculty.", e);
+            throw e;
+        } finally {
+            MDC.clear();
+        }
+    }
+
+    private String getCurrentUserId() {
+        return "user123";
     }
 
     @Transactional

@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: co.edu.icesi.dev.outcome_curr_mgmt.service.curriculum_qa.StudOutcomeServiceTest
--------------------------------------------------------------------------------
-Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.058 s -- in co.edu.icesi.dev.outcome_curr_mgmt.service.curriculum_qa.StudOutcomeServiceTest

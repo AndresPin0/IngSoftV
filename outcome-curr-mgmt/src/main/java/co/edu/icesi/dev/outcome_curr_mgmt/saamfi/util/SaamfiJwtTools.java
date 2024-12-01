@@ -41,6 +41,8 @@ public class SaamfiJwtTools {
                 .parseClaimsJws(authToken).getBody();
         return (String) claims.get(USERNAME_CLAIM);
     }
+    
+
     public long getSysIdFromJWT(String authToken) {
         Claims claims = Jwts.parser().setSigningKey(saamfiClient.getPublicKey()).build()
                 .parseClaimsJws(authToken).getBody();

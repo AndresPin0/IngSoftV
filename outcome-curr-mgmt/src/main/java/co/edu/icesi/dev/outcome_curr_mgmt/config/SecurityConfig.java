@@ -39,19 +39,20 @@ public class SecurityConfig {
         http.cors(cors -> cors.configurationSource(corsConfigurationSource()));
         http.headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable));
 
-        String contextPath = "/outcurrapi/";
+        String contextPath = "/actuator/";
 
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers(new AntPathRequestMatcher(contextPath + "/actuator/**")).permitAll());
 
         http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher("/actuator/**")).permitAll());
+        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher("/outcurrapi/**")).permitAll());
         http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/h2-console/**")).permitAll());
         http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/v1/auth/users/login")).permitAll());
         http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/swagger-ui/**")).permitAll());
         http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/v3/api-docs/**")).permitAll());
 
-        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/v1/**")).authenticated());
-        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/**")).authenticated())
+        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/v1/**")).permitAll());
+        http.authorizeHttpRequests(authz -> authz.requestMatchers(new AntPathRequestMatcher(contextPath + "/**")).permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http.addFilterBefore(saamfiAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
