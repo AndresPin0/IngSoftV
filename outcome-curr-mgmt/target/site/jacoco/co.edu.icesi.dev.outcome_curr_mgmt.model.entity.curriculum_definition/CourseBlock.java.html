@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CourseBlock.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_definition</a> &gt; <span class="el_source">CourseBlock.java</span></div><h1>CourseBlock.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_definition;
+
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.management.AcPeriod;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.management.UsrBlock;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * The persistent class for the COURSE_BLOCK database table.
+ */
+import co.edu.icesi.dev.outcome_curr_mgmt.config.DataModelerGenerated;
+
+@Entity
+@DataModelerGenerated
+<span class="nc" id="L29">@Builder</span>
+@AllArgsConstructor
+@Table(name = &quot;COURSE_BLOCK&quot;)
+@NamedQuery(name = &quot;CourseBlock.findAll&quot;, query = &quot;SELECT c FROM CourseBlock c&quot;)
+public class CourseBlock implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name = &quot;COURSE_BLOCK_BLOCKID_GENERATOR&quot;, allocationSize = 1, sequenceName = &quot;COURSE_BLOCK_SEQ&quot;)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;COURSE_BLOCK_BLOCKID_GENERATOR&quot;)
+    @Column(name = &quot;BLOCK_ID&quot;)
+    private long blockId;
+
+    @Column(name = &quot;BLOCK_IS_ACTIVE&quot;)
+    private char blockIsActive;
+
+    @Column(name = &quot;BLOCK_NAME_ENG&quot;)
+    private String blockNameEng;
+
+    @Column(name = &quot;BLOCK_NAME_SPA&quot;)
+    private String blockNameSpa;
+
+    //bi-directional many-to-one association to AcpCourseblock
+    @OneToMany(mappedBy = &quot;courseBlock&quot;)
+    private List&lt;AcpCourseblock&gt; acpCourseblocks;
+
+    //bi-directional many-to-one association to CbAcadpcur
+    @OneToMany(mappedBy = &quot;courseBlock&quot;)
+    private List&lt;CbAcadpcur&gt; cbAcadpcurs;
+
+    //bi-directional many-to-one association to AcPeriod
+    @ManyToOne
+    @JoinColumn(name = &quot;END_AC_PERIOD_ID&quot;)
+    private AcPeriod endAcPeriod;
+
+    //bi-directional many-to-one association to AcPeriod
+    @ManyToOne
+    @JoinColumn(name = &quot;START_AC_PERIOD_ID&quot;)
+    private AcPeriod startAcPeriod;
+
+    //bi-directional many-to-one association to CourseBlockCouse
+    @OneToMany(mappedBy = &quot;courseBlock&quot;)
+    private List&lt;CourseBlockCouse&gt; courseBlockCouses;
+
+    //bi-directional many-to-one association to UsrBlock
+    @OneToMany(mappedBy = &quot;courseBlock&quot;)
+    private List&lt;UsrBlock&gt; usrBlocks;
+
+    public CourseBlock() {
+        //Entity constructor
+    }
+
+    public long getBlockId() {
+        return this.blockId;
+    }
+
+    public void setBlockId(long blockId) {
+        this.blockId = blockId;
+    }
+
+    public char getBlockIsActive() {
+        return this.blockIsActive;
+    }
+
+    public void setBlockIsActive(char blockIsActive) {
+        this.blockIsActive = blockIsActive;
+    }
+
+    public String getBlockNameEng() {
+        return this.blockNameEng;
+    }
+
+    public void setBlockNameEng(String blockNameEng) {
+        this.blockNameEng = blockNameEng;
+    }
+
+    public String getBlockNameSpa() {
+        return this.blockNameSpa;
+    }
+
+    public void setBlockNameSpa(String blockNameSpa) {
+        this.blockNameSpa = blockNameSpa;
+    }
+
+    public List&lt;AcpCourseblock&gt; getAcpCourseblocks() {
+        return this.acpCourseblocks;
+    }
+
+    public void setAcpCourseblocks(List&lt;AcpCourseblock&gt; acpCourseblocks) {
+        this.acpCourseblocks = acpCourseblocks;
+    }
+
+    public AcpCourseblock addAcpCourseblock(AcpCourseblock acpCourseblock) {
+        getAcpCourseblocks().add(acpCourseblock);
+        acpCourseblock.setCourseBlock(this);
+
+        return acpCourseblock;
+    }
+
+    public AcpCourseblock removeAcpCourseblock(AcpCourseblock acpCourseblock) {
+        getAcpCourseblocks().remove(acpCourseblock);
+        acpCourseblock.setCourseBlock(null);
+
+        return acpCourseblock;
+    }
+
+    public List&lt;CbAcadpcur&gt; getCbAcadpcurs() {
+        return this.cbAcadpcurs;
+    }
+
+    public void setCbAcadpcurs(List&lt;CbAcadpcur&gt; cbAcadpcurs) {
+        this.cbAcadpcurs = cbAcadpcurs;
+    }
+
+    public CbAcadpcur addCbAcadpcur(CbAcadpcur cbAcadpcur) {
+        getCbAcadpcurs().add(cbAcadpcur);
+        cbAcadpcur.setCourseBlock(this);
+
+        return cbAcadpcur;
+    }
+
+    public CbAcadpcur removeCbAcadpcur(CbAcadpcur cbAcadpcur) {
+        getCbAcadpcurs().remove(cbAcadpcur);
+        cbAcadpcur.setCourseBlock(null);
+
+        return cbAcadpcur;
+    }
+
+    public AcPeriod getEndAcPeriod() {
+        return this.endAcPeriod;
+    }
+
+    public void setEndAcPeriod(AcPeriod acPeriod1) {
+        this.endAcPeriod = acPeriod1;
+    }
+
+    public AcPeriod getStartAcPeriod() {
+        return this.startAcPeriod;
+    }
+
+    public void setStartAcPeriod(AcPeriod acPeriod2) {
+        this.startAcPeriod = acPeriod2;
+    }
+
+    public List&lt;CourseBlockCouse&gt; getCourseBlockCouses() {
+        return this.courseBlockCouses;
+    }
+
+    public void setCourseBlockCouses(List&lt;CourseBlockCouse&gt; courseBlockCouses) {
+        this.courseBlockCouses = courseBlockCouses;
+    }
+
+    public CourseBlockCouse addCourseBlockCous(CourseBlockCouse courseBlockCous) {
+        getCourseBlockCouses().add(courseBlockCous);
+        courseBlockCous.setCourseBlock(this);
+
+        return courseBlockCous;
+    }
+
+    public CourseBlockCouse removeCourseBlockCous(CourseBlockCouse courseBlockCous) {
+        getCourseBlockCouses().remove(courseBlockCous);
+        courseBlockCous.setCourseBlock(null);
+
+        return courseBlockCous;
+    }
+
+    public List&lt;UsrBlock&gt; getUsrBlocks() {
+        return this.usrBlocks;
+    }
+
+    public void setUsrBlocks(List&lt;UsrBlock&gt; usrBlocks) {
+        this.usrBlocks = usrBlocks;
+    }
+
+    public UsrBlock addUsrBlock(UsrBlock usrBlock) {
+        getUsrBlocks().add(usrBlock);
+        usrBlock.setCourseBlock(this);
+
+        return usrBlock;
+    }
+
+    public UsrBlock removeUsrBlock(UsrBlock usrBlock) {
+        getUsrBlocks().remove(usrBlock);
+        usrBlock.setCourseBlock(null);
+
+        return usrBlock;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

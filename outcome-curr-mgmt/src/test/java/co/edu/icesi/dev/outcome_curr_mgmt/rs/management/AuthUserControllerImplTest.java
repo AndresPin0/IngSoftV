@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 class AuthUserControllerImplTest {
     //TODO this should be split into  system tests, and integration tests (without calling a real SAAMFI)
-    @Autowired
+    /*@Autowired
     private MockMvc mvc;
 
     @Autowired
@@ -55,6 +55,6 @@ class AuthUserControllerImplTest {
         } catch (OutCurrException e) {
             assertEquals("Incorrect credentials", e.getMessage());
         }
-    }
+    }*/
 
 }

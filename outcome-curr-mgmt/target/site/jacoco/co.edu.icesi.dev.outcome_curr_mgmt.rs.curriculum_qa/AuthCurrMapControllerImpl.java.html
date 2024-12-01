@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AuthCurrMapControllerImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.rs.curriculum_qa</a> &gt; <span class="el_source">AuthCurrMapControllerImpl.java</span></div><h1>AuthCurrMapControllerImpl.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.rs.curriculum_qa;
+
+import co.edu.icesi.dev.outcome_curr.mgmt.model.curriculum_qa.MatrixDTO;
+import co.edu.icesi.dev.outcome_curr.mgmt.rs.curriculum_qa.AuthCurrMapController;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_definition.Course;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa.StudOutcome;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.curriculum_definition.CourseService;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.curriculum_qa.CurrMapService;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.curriculum_qa.StudOutcomeService;
+import lombok.RequiredArgsConstructor;
+
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+<span class="fc" id="L17">@RequiredArgsConstructor</span>
+public class AuthCurrMapControllerImpl implements AuthCurrMapController {
+    private final StudOutcomeService studOutcomeService;
+    private final CourseService courseService;
+    private final CurrMapService currMapService;
+
+    @Override
+    public MatrixDTO getMatrix(long facultyId, long acadProgId, long acadProgCurrId) {
+<span class="fc" id="L25">        List&lt;StudOutcome&gt; studOutcomes = studOutcomeService.getAllStudOutcomesByAcadProgCurrIdAndAcadProgIdAndFacultyId(</span>
+                acadProgCurrId,
+                acadProgId, facultyId);
+<span class="fc" id="L28">        List&lt;Course&gt; courses = courseService.findAllByAcadProgIdAndFacultyIdAndAcadProgCurrId(acadProgId, facultyId, acadProgCurrId);</span>
+<span class="fc" id="L29">        return currMapService.getMatrixDTO(acadProgCurrId, acadProgId, studOutcomes, courses);</span>
+    }
+
+    @Override
+    public void updateSuggestedCurrMapRequestStatus(long facultyId, long programId, long acadProgCurrId, long prevCurrMapId, long successorCurrMapId, String destinationState) {
+<span class="fc" id="L34">        currMapService.updateSuggestedCurrMapRequestStatus(facultyId, programId, acadProgCurrId, prevCurrMapId, successorCurrMapId, destinationState);</span>
+<span class="fc" id="L35">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

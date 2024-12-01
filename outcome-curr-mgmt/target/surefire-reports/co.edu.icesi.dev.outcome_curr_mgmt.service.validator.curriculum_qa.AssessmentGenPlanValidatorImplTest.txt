@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: co.edu.icesi.dev.outcome_curr_mgmt.service.validator.curriculum_qa.AssessmentGenPlanValidatorImplTest
+-------------------------------------------------------------------------------
+Tests run: 24, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.036 s -- in co.edu.icesi.dev.outcome_curr_mgmt.service.validator.curriculum_qa.AssessmentGenPlanValidatorImplTest

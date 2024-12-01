@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AssmtPlanOut.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa</a> &gt; <span class="el_source">AssmtPlanOut.java</span></div><h1>AssmtPlanOut.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_qa;
+
+import co.edu.icesi.dev.outcome_curr_mgmt.config.DataModelerGenerated;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.management.AcPeriod;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
+
+@Entity
+@DataModelerGenerated
+<span class="nc" id="L27">@Builder</span>
+@AllArgsConstructor
+@Table(name = &quot;ASSMT_PLAN_OUT&quot;)
+@NamedQuery(name = &quot;AssmtPlanOut.findAll&quot;, query = &quot;SELECT a FROM AssmtPlanOut a&quot;)
+public class AssmtPlanOut implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @SequenceGenerator(name = &quot;ASSMT_PLAN_OUT_ASPNOUTID_GENERATOR&quot;, allocationSize = 1, sequenceName = &quot;ASSMT_PLAN_OUT_SEQ&quot;)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = &quot;ASSMT_PLAN_OUT_ASPNOUTID_GENERATOR&quot;)
+    @Column(name = &quot;ASPNOUT_ID&quot;)
+    private long aspnoutId;
+
+    @Column(name = &quot;ASPNOUT_CDIO_LEVEL_3&quot;)
+    private String aspnoutCdioLevel3;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = &quot;ASPNOUT_EVALUATION_DATE&quot;)
+    private Date aspnoutEvaluationDate;
+
+    //bi-directional many-to-one association to AcPeriod
+    @ManyToOne
+    @JoinColumn(name = &quot;COLLECT_AC_PERIOD_ID&quot;)
+    private AcPeriod collectAcPeriod;
+
+    //bi-directional many-to-one association to AcPeriod
+    @ManyToOne
+    @JoinColumn(name = &quot;ASSESS_AC_PERIOD_ID&quot;)
+    private AcPeriod assessAcPeriod;
+
+    //bi-directional many-to-one association to AssmtPlanSubcyclev
+    @ManyToOne
+    @JoinColumn(name = &quot;APLANSUB_ASGPLASUBCYCLE_ID&quot;)
+    private AssmtPlanSubcyclev assmtPlanSubcyclev;
+
+    //bi-directional many-to-one association to StudOutcome
+    @ManyToOne
+    @JoinColumn(name = &quot;SO_SO_ID&quot;)
+    private StudOutcome studOutcome;
+
+    //bi-directional many-to-one association to AssmtPlanPi
+    @OneToMany(mappedBy = &quot;assmtPlanOut&quot;)
+    private List&lt;AssmtPlanPi&gt; assmtPlanPis;
+
+    public AssmtPlanOut() {
+        //Entity constructor
+    }
+
+    public long getAspnoutId() {
+        return this.aspnoutId;
+    }
+
+    public void setAspnoutId(long aspnoutId) {
+        this.aspnoutId = aspnoutId;
+    }
+
+    public String getAspnoutCdioLevel3() {
+        return this.aspnoutCdioLevel3;
+    }
+
+    public void setAspnoutCdioLevel3(String aspnoutCdioLevel3) {
+        this.aspnoutCdioLevel3 = aspnoutCdioLevel3;
+    }
+
+    public Date getAspnoutEvaluationDate() {
+        return this.aspnoutEvaluationDate;
+    }
+
+    public void setAspnoutEvaluationDate(Date aspnoutEvaluationDate) {
+        this.aspnoutEvaluationDate = aspnoutEvaluationDate;
+    }
+
+    public AcPeriod getCollectAcPeriod() {
+        return this.collectAcPeriod;
+    }
+
+    public void setCollectAcPeriod(AcPeriod acPeriod1) {
+        this.collectAcPeriod = acPeriod1;
+    }
+
+    public AcPeriod getAssessAcPeriod() {
+        return this.assessAcPeriod;
+    }
+
+    public void setAssessAcPeriod(AcPeriod acPeriod2) {
+        this.assessAcPeriod = acPeriod2;
+    }
+
+    public AssmtPlanSubcyclev getAssmtPlanSubcyclev() {
+        return this.assmtPlanSubcyclev;
+    }
+
+    public void setAssmtPlanSubcyclev(AssmtPlanSubcyclev assmtPlanSubcyclev) {
+        this.assmtPlanSubcyclev = assmtPlanSubcyclev;
+    }
+
+    public StudOutcome getStudOutcome() {
+        return this.studOutcome;
+    }
+
+    public void setStudOutcome(StudOutcome studOutcome) {
+        this.studOutcome = studOutcome;
+    }
+
+    public List&lt;AssmtPlanPi&gt; getAssmtPlanPis() {
+        return this.assmtPlanPis;
+    }
+
+    public void setAssmtPlanPis(List&lt;AssmtPlanPi&gt; assmtPlanPis) {
+        this.assmtPlanPis = assmtPlanPis;
+    }
+
+    public AssmtPlanPi addAssmtPlanPi(AssmtPlanPi assmtPlanPi) {
+        getAssmtPlanPis().add(assmtPlanPi);
+        assmtPlanPi.setAssmtPlanOut(this);
+
+        return assmtPlanPi;
+    }
+
+    public AssmtPlanPi removeAssmtPlanPi(AssmtPlanPi assmtPlanPi) {
+        getAssmtPlanPis().remove(assmtPlanPi);
+        assmtPlanPi.setAssmtPlanOut(null);
+
+        return assmtPlanPi;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

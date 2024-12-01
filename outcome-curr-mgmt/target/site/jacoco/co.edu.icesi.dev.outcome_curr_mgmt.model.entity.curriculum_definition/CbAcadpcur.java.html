@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CbAcadpcur.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_definition</a> &gt; <span class="el_source">CbAcadpcur.java</span></div><h1>CbAcadpcur.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_definition;
+
+import co.edu.icesi.dev.outcome_curr_mgmt.config.DataModelerGenerated;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import java.io.Serializable;
+
+@Entity
+@DataModelerGenerated
+<span class="nc" id="L17">@Builder</span>
+@AllArgsConstructor
+@Table(name = &quot;CB_ACADPCUR&quot;)
+@NamedQuery(name = &quot;CbAcadpcur.findAll&quot;, query = &quot;SELECT c FROM CbAcadpcur c&quot;)
+public class CbAcadpcur implements Serializable {
+    private static final long serialVersionUID = 1L;
+
+    @EmbeddedId
+    private CbAcadpcurPK id;
+
+    private String many2many;
+
+    //bi-directional many-to-one association to AcadProgCurriculum
+    @ManyToOne
+    @JoinColumn(name = &quot;ACADP_CUR_APC_ID&quot;, insertable = false, updatable = false)
+    private AcadProgCurriculum acadProgCurriculum;
+
+    //bi-directional many-to-one association to CourseBlock
+    @ManyToOne
+    @JoinColumn(name = &quot;BL_BLOCK_ID&quot;, insertable = false, updatable = false)
+    private CourseBlock courseBlock;
+
+    public CbAcadpcur() {
+        //Entity constructor
+    }
+
+    public CbAcadpcurPK getId() {
+        return this.id;
+    }
+
+    public void setId(CbAcadpcurPK id) {
+        this.id = id;
+    }
+
+    public String getMany2many() {
+        return this.many2many;
+    }
+
+    public void setMany2many(String many2many) {
+        this.many2many = many2many;
+    }
+
+    public AcadProgCurriculum getAcadProgCurriculum() {
+        return this.acadProgCurriculum;
+    }
+
+    public void setAcadProgCurriculum(AcadProgCurriculum acadProgCurriculum) {
+        this.acadProgCurriculum = acadProgCurriculum;
+    }
+
+    public CourseBlock getCourseBlock() {
+        return this.courseBlock;
+    }
+
+    public void setCourseBlock(CourseBlock courseBlock) {
+        this.courseBlock = courseBlock;
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

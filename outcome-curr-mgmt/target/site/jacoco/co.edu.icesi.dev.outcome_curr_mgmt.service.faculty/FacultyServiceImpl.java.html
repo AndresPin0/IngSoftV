@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FacultyServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.service.faculty</a> &gt; <span class="el_source">FacultyServiceImpl.java</span></div><h1>FacultyServiceImpl.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.service.faculty;
+
+import co.edu.icesi.dev.outcome_curr.mgmt.model.stdindto.faculty.FacultyInDTO;
+import co.edu.icesi.dev.outcome_curr.mgmt.model.stdoutdto.faculty.FacultyOutDTO;
+import co.edu.icesi.dev.outcome_curr_mgmt.exception.OutCurrException;
+import co.edu.icesi.dev.outcome_curr_mgmt.exception.OutCurrExceptionType;
+import co.edu.icesi.dev.outcome_curr_mgmt.mapper.faculty.FacultyMapper;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.faculty.Faculty;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.enums.ChangeLogAction;
+import co.edu.icesi.dev.outcome_curr_mgmt.persistence.faculty.FacultyRepository;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.provider.faculty.FacultyProvider;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.validator.faculty.UserPermAccess;
+
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@Service
+<span class="fc" id="L26">@RequiredArgsConstructor</span>
+public class FacultyServiceImpl implements FacultyService {
+<span class="fc" id="L28">    private static final Logger logger = LoggerFactory.getLogger(FacultyServiceImpl.class);</span>
+    private final FacultyRepository facultyRepository;
+    private final FacultyMapper facultyMapper;
+    private final FacultyProvider facultyProvider;
+
+    @Override
+    @Transactional
+    public FacultyOutDTO createFaculty(FacultyInDTO facultyInDTO) {
+<span class="fc" id="L36">        MDC.put(&quot;operation&quot;, &quot;createFaculty&quot;);</span>
+<span class="fc" id="L37">        MDC.put(&quot;transactionId&quot;, UUID.randomUUID().toString());</span>
+<span class="fc" id="L38">        MDC.put(&quot;userId&quot;, getCurrentUserId());</span>
+<span class="fc" id="L39">        logger.info(&quot;Creating a new faculty with name: {}&quot;, facultyInDTO.facNameEng());</span>
+
+        try {
+<span class="fc" id="L42">            FacultyOutDTO result = facultyProvider.saveFaculty(facultyInDTO);</span>
+<span class="fc" id="L43">            logger.info(&quot;Successfully created faculty with ID: {}&quot;, result.facId());</span>
+<span class="fc" id="L44">            return result;</span>
+<span class="fc" id="L45">        } catch (Exception e) {</span>
+<span class="fc" id="L46">            logger.error(&quot;Error while creating faculty.&quot;, e);</span>
+<span class="fc" id="L47">            throw e;</span>
+        } finally {
+<span class="fc" id="L49">            MDC.clear();</span>
+        }
+    }
+
+    private String getCurrentUserId() {
+<span class="fc" id="L54">        return &quot;user123&quot;;</span>
+    }
+
+    @Transactional
+    @Override
+    public FacultyOutDTO getFacultyByFacId(long facId) {
+<span class="fc" id="L60">        logger.info(&quot;Getting a faculty by its id.&quot;);</span>
+<span class="fc" id="L61">        facultyProvider.validateAccess(0L, UserPermAccess.QUERY);</span>
+<span class="fc" id="L62">        return facultyMapper.facultyToFacultyOutDTO(facultyProvider.findFacultyByFacId(facId));</span>
+    }
+
+    @Transactional
+    @Override
+    public FacultyOutDTO getFacultyByFacNameInSpa(String name) {
+<span class="nc" id="L68">        return facultyProvider.getFacultyByNameInSpa(name);</span>
+    }
+
+    @Transactional
+    @Override
+    public FacultyOutDTO getFacultyByFacNameInEng(String name) {
+<span class="nc" id="L74">        return facultyProvider.getFacultyByNameInEng(name);</span>
+    }
+    @Transactional
+    @Override
+    public List&lt;FacultyOutDTO&gt; getFaculties() {
+<span class="fc" id="L79">        logger.info(&quot;Getting all faculties of the system.&quot;);</span>
+<span class="fc" id="L80">        facultyProvider.validateAccess(0L,UserPermAccess.QUERY);</span>
+<span class="fc" id="L81">        return facultyMapper.facultiesToFacultiesOutDTO(facultyRepository.findAll());</span>
+    }
+    @Transactional
+    @Override
+    public FacultyOutDTO updateFaculty(long facId, FacultyInDTO facultyToUpdate) {
+<span class="fc" id="L86">        logger.info(&quot;Updating the faculty {}.&quot;, facId);</span>
+<span class="fc" id="L87">        facultyProvider.validateAccess(facId, UserPermAccess.ADMIN);</span>
+
+<span class="fc" id="L89">        facultyProvider.checkIfSpaNameIsAlreadyUsed(facultyToUpdate.facNameSpa());</span>
+<span class="fc" id="L90">        facultyProvider.checkIfEngNameIsAlreadyUsed(facultyToUpdate.facNameEng());</span>
+
+<span class="fc" id="L92">        Faculty faculty = facultyProvider.findFacultyByFacId(facId);</span>
+<span class="fc" id="L93">        FacultyOutDTO facultyBefore = facultyMapper.facultyToFacultyOutDTO(faculty);</span>
+
+<span class="fc" id="L95">        faculty.setFacIsActive(facultyToUpdate.isActive().charAt(0));</span>
+<span class="fc" id="L96">        faculty.setFacNameSpa(facultyToUpdate.facNameSpa());</span>
+<span class="fc" id="L97">        faculty.setFacNameEng(facultyToUpdate.facNameEng());</span>
+
+<span class="fc" id="L99">        facultyRepository.save(faculty);</span>
+
+<span class="fc" id="L101">        facultyProvider.addActionToChangelog(ChangeLogAction.UPDATE, facId,&quot;FACULTY&quot;, faculty, facultyBefore);</span>
+<span class="fc" id="L102">        logger.info(&quot;Faculty successfully updated.&quot;);</span>
+
+<span class="fc" id="L104">        return facultyMapper.facultyToFacultyOutDTO(faculty);</span>
+    }
+
+    @Transactional
+    @Override
+    public void deleteFaculty(long facId){
+<span class="fc" id="L110">        logger.info(&quot;Deleting a faculty.&quot;);</span>
+<span class="fc" id="L111">        facultyProvider.validateAccess(facId, UserPermAccess.ADMIN);</span>
+<span class="fc" id="L112">        Faculty facultyToDelete = facultyProvider.findFacultyByFacId(facId);</span>
+
+<span class="fc" id="L114">        logger.info(&quot;Checking if the faculty has academic programs, courses or users associated.&quot;);</span>
+<span class="pc bpc" id="L115" title="1 of 4 branches missed.">        if (facultyToDelete.getAcadPrograms().isEmpty() &amp;&amp; facultyToDelete.getCourses().isEmpty()){</span>
+
+<span class="fc" id="L117">            facultyRepository.delete(facultyToDelete);</span>
+<span class="fc" id="L118">            facultyProvider.addActionToChangelog(ChangeLogAction.DELETE, facId,&quot;FACULTY&quot;, null, facultyToDelete);</span>
+<span class="fc" id="L119">            logger.info(&quot;Faculty {} was successfully deleted.&quot;, facId);</span>
+
+        }else {
+<span class="fc" id="L122">            logger.error(&quot;Error: a faculty can't be deleted if it has associated data.&quot;);</span>
+<span class="fc" id="L123">            throw new OutCurrException(OutCurrExceptionType.FACULTY_NOT_DELETED);</span>
+        }
+<span class="fc" id="L125">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

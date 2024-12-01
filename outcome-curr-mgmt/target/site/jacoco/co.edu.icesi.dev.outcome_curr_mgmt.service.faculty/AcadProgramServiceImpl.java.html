@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AcadProgramServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">outcome-curr-mgmt</a> &gt; <a href="index.source.html" class="el_package">co.edu.icesi.dev.outcome_curr_mgmt.service.faculty</a> &gt; <span class="el_source">AcadProgramServiceImpl.java</span></div><h1>AcadProgramServiceImpl.java</h1><pre class="source lang-java linenums">package co.edu.icesi.dev.outcome_curr_mgmt.service.faculty;
+
+import co.edu.icesi.dev.outcome_curr.mgmt.model.stdindto.faculty.AcadProgramInDTO;
+import co.edu.icesi.dev.outcome_curr.mgmt.model.stdoutdto.faculty.AcadProgramOutDTO;
+import co.edu.icesi.dev.outcome_curr_mgmt.exception.OutCurrException;
+import co.edu.icesi.dev.outcome_curr_mgmt.exception.OutCurrExceptionType;
+import co.edu.icesi.dev.outcome_curr_mgmt.mapper.faculty.AcadProgramMapper;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.faculty.AcadProgram;
+import co.edu.icesi.dev.outcome_curr_mgmt.model.entity.faculty.Faculty;
+import co.edu.icesi.dev.outcome_curr_mgmt.persistence.faculty.AcadProgramRepository;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.perm_types.faculty.AcadProgramPermType;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.provider.faculty.FacultyProvider;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.validator.faculty.AcadProgramValidator;
+import co.edu.icesi.dev.outcome_curr_mgmt.service.validator.faculty.UserPermAccess;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+import static co.edu.icesi.dev.outcome_curr_mgmt.service.perm_types.faculty.AcadProgramPermType.AcadProgramPermStatus.CURRENT;
+
+@Service
+<span class="fc" id="L30">@RequiredArgsConstructor</span>
+@CacheConfig(cacheNames = {&quot;acadProgram&quot;})
+public class AcadProgramServiceImpl implements AcadProgramService {
+    //TODO add test coverage
+<span class="fc" id="L34">    private static final Logger logger = LoggerFactory.getLogger(AcadProgramServiceImpl.class);</span>
+
+    private final AcadProgramValidator acadProgramValidator;
+
+    private final AcadProgramRepository acadProgramRepository;
+
+    private final FacultyProvider facultyProvider;
+
+    private final AcadProgramMapper acadProgramMapper;
+
+    //TODO the program should not assume the operations are for CURRENT programs. It should also support Future
+    // and Inactive, filterin according to the parameter used as input. Use the logger for errors.
+
+    @Transactional
+    @Override
+    public List&lt;AcadProgram&gt; getAcadProgramsByFaculty(long facultyId) {
+<span class="nc" id="L50">        validateAccess(facultyId, 0L, UserPermAccess.QUERY, CURRENT);</span>
+<span class="nc" id="L51">        List&lt;AcadProgram&gt; products = acadProgramRepository.findAllByFacultyFacId(facultyId);</span>
+        //TODO validate the faculty exists instead of empty
+<span class="nc bnc" id="L53" title="All 2 branches missed.">        if (products.isEmpty()) {</span>
+<span class="nc" id="L54">            throw new OutCurrException(OutCurrExceptionType.FACULTY_INVALID_FAC_ID);</span>
+        }
+<span class="nc" id="L56">        return products;</span>
+    }
+
+    @Transactional
+    @Override
+    public AcadProgramOutDTO getAcadProgram(long facultyId, long acadProgramId) {
+<span class="nc" id="L62">        validateAccess(facultyId, acadProgramId, UserPermAccess.QUERY, CURRENT);</span>
+<span class="nc" id="L63">        return acadProgramMapper.acadProgramToAcadProgramOutDto(findAcadProgram(facultyId, acadProgramId));</span>
+    }
+
+    //TODO enable AspectJ for non-injected cache calls, change visibility to non-public
+    @Cacheable(key = &quot;#acadProgramId&quot;)
+    public AcadProgram findAcadProgram(long facultyId, long acadProgramId) {
+        // TODO: validate acadProgram is in faculty.
+<span class="nc" id="L70">        return acadProgramRepository.findByAcpId(acadProgramId)</span>
+<span class="nc" id="L71">                .orElseThrow(() -&gt; new OutCurrException(OutCurrExceptionType.PROGACAD_INVALID_PROGRAM_ID));</span>
+    }
+
+    @Transactional
+    @Override
+    public AcadProgramOutDTO createAcadProgram(long facultyId, AcadProgramInDTO acadProgramInDTO) {
+<span class="nc" id="L77">        validateAccess(facultyId, 0L, UserPermAccess.ADMIN, CURRENT);</span>
+<span class="nc" id="L78">        Faculty faculty = facultyProvider.findFacultyByFacId(facultyId);</span>
+<span class="nc" id="L79">        AcadProgram acadProgram = acadProgramMapper.acadProgramInDTOToAcadProgram(acadProgramInDTO);</span>
+<span class="nc" id="L80">        acadProgram.setFaculty(faculty);</span>
+<span class="nc" id="L81">        return acadProgramMapper.acadProgramToAcadProgramOutDto(acadProgramRepository.save(acadProgram));</span>
+    }
+
+    @Transactional
+    @Override
+    @CachePut(key = &quot;#facultyId&quot;)
+    public void updateAcadProgram(long facultyId, long acadProgramId, AcadProgramInDTO acadProgramInDTO) {
+        //TODO validate the faculty
+        // TODO: validate acadProgram is in faculty. Throw exception if program does not exists
+<span class="nc" id="L90">        validateAccess(facultyId, acadProgramId, UserPermAccess.ADMIN, CURRENT);</span>
+<span class="nc" id="L91">        AcadProgram acadProgram = findAcadProgram(facultyId, acadProgramId);</span>
+<span class="nc" id="L92">        acadProgramMapper.updateAcadProgram(acadProgramInDTO, acadProgram);</span>
+<span class="nc" id="L93">        acadProgramRepository.save(acadProgram);</span>
+<span class="nc" id="L94">    }</span>
+
+    @Transactional
+    @Override
+    @CacheEvict(key = &quot;#acadProgramId&quot;)
+    public void deleteAcadProgram(long facultyId, long acadProgramId) {
+        //TODO validate the faculty
+        // TODO: validate acadProgram is in faculty. Throw exception if program does not exists
+<span class="nc" id="L102">        validateAccess(facultyId, acadProgramId, UserPermAccess.ADMIN, CURRENT);</span>
+<span class="nc" id="L103">        AcadProgram acadProgram = findAcadProgram(facultyId, acadProgramId);</span>
+<span class="nc" id="L104">        acadProgramRepository.delete(acadProgram);</span>
+<span class="nc" id="L105">    }</span>
+
+    private void validateAccess(long facultyId, long acadProgId, UserPermAccess permAccess,
+            AcadProgramPermType.AcadProgramPermStatus permStatus) {
+<span class="nc" id="L109">        acadProgramValidator.enforceUsrFacForAcadProgram(facultyId, permAccess, permStatus);</span>
+<span class="nc" id="L110">        acadProgramValidator.enforceUsrPrgForAcadProgram(acadProgId, permAccess, permStatus);</span>
+<span class="nc" id="L111">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
