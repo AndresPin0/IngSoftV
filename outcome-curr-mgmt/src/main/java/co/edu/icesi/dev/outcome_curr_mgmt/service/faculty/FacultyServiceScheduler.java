@@ -1,6 +1,7 @@
 package co.edu.icesi.dev.outcome_curr_mgmt.service.faculty;
 import co.edu.icesi.dev.outcome_curr.mgmt.model.stdoutdto.faculty.FacultyOutDTO;
 import lombok.RequiredArgsConstructor;
+import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -15,6 +16,7 @@ public class FacultyServiceScheduler {
 
     // Programación de la tarea: cada media noche
     @Scheduled(cron = "0 0 0 * * ?")
+    @SchedulerLock(name = "FacultyServiceScheduler_cleanInactiveFaculties", lockAtMostFor = "10m", lockAtLeastFor = "5m")
     public void cleanInactiveFaculties() {
         logger.info("Scheduled task: Cleaning inactive faculties.");
         List<FacultyOutDTO> faculties = facultyService.getFaculties();
