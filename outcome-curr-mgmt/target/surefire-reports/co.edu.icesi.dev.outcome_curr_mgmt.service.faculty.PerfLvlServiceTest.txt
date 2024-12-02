@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: co.edu.icesi.dev.outcome_curr_mgmt.service.faculty.PerfLvlServiceTest
 -------------------------------------------------------------------------------
-Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.732 s -- in co.edu.icesi.dev.outcome_curr_mgmt.service.faculty.PerfLvlServiceTest
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.104 s -- in co.edu.icesi.dev.outcome_curr_mgmt.service.faculty.PerfLvlServiceTest

@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: co.edu.icesi.dev.outcome_curr_mgmt.service.banner.BannerFacultyServiceTest
 -------------------------------------------------------------------------------
-Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.723 s -- in co.edu.icesi.dev.outcome_curr_mgmt.service.banner.BannerFacultyServiceTest
+Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.160 s -- in co.edu.icesi.dev.outcome_curr_mgmt.service.banner.BannerFacultyServiceTest

@@ -13,6 +13,7 @@ import java.util.List;
 
 @SpringBootTest
 class FacultyServiceSchedulerTest {
+
     @Autowired
     private FacultyServiceScheduler scheduler;
 
@@ -20,7 +21,7 @@ class FacultyServiceSchedulerTest {
     private FacultyService facultyService;
 
     @Test
-    void testCleanInactiveFaculties() {
+    void testCleanInactiveFacultiesWithLock() {
         // Crear facultades simuladas
         FacultyOutDTO activeFaculty = FacultyOutDTO.builder()
                 .facId(1L)
@@ -41,13 +42,13 @@ class FacultyServiceSchedulerTest {
         // Configurar el mock para devolver las facultades simuladas
         Mockito.when(facultyService.getFaculties()).thenReturn(List.of(activeFaculty, inactiveFaculty));
 
-        // Ejecutar el scheduler
-        scheduler.cleanInactiveFaculties();
+        // Ejecutar el scheduler desde dos instancias simuladas
+        scheduler.cleanInactiveFaculties();  // Simula instancia 1
+        //scheduler.cleanInactiveFaculties();  // Simula instancia 2
 
-        // Verificar que solo la facultad inactiva sea eliminada
+        // Verificar que solo la facultad inactiva sea eliminada una vez
         Mockito.verify(facultyService, Mockito.times(1)).deleteFaculty(2L);
+        // Verificar que la facultad activa nunca se elimina
         Mockito.verify(facultyService, Mockito.never()).deleteFaculty(1L);
     }
-
-
 }

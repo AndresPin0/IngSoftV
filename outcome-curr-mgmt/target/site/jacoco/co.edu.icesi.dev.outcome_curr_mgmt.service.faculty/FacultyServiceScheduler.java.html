@@ -14,8 +14,8 @@ public class FacultyServiceScheduler {
 <span class="fc" id="L14">    private static final Logger logger = LoggerFactory.getLogger(FacultyServiceScheduler.class);</span>
     private final FacultyService facultyService;
 
-    // Programación de la tarea: cada media noche
-    @Scheduled(cron = &quot;0 0 0 * * ?&quot;)
+    // Programación de la tarea: cada minuto
+    @Scheduled(cron = &quot;0 0/1 * * * ?&quot;)
     @SchedulerLock(name = &quot;FacultyServiceScheduler_cleanInactiveFaculties&quot;, lockAtMostFor = &quot;10m&quot;, lockAtLeastFor = &quot;5m&quot;)
     public void cleanInactiveFaculties() {
 <span class="fc" id="L21">        logger.info(&quot;Scheduled task: Cleaning inactive faculties.&quot;);</span>

@@ -92,7 +92,7 @@ public class SaamfiJwtTools {
     }
 
     public boolean loggedInUserHasPermission(List&lt;String&gt; permissionNames) {
-<span class="nc" id="L95">        return permissionNames.stream().anyMatch(permissionName -&gt; tokenHasPermission(</span>
+<span class="pc" id="L95">        return permissionNames.stream().anyMatch(permissionName -&gt; tokenHasPermission(</span>
 <span class="nc" id="L96">                (String) SecurityContextHolder.getContext().getAuthentication().getCredentials(),</span>
                 permissionName));
     }

@@ -46,7 +46,7 @@ outcome-curr-mgmt,co.edu.icesi.dev.outcome_curr_mgmt.model.entity.faculty,Assess
 outcome-curr-mgmt,co.edu.icesi.dev.outcome_curr_mgmt.mapper.rubric,RubricCellMapperImpl,0,3,0,0,0,1,0,1,0,1
 outcome-curr-mgmt,co.edu.icesi.dev.outcome_curr_mgmt.mapper.rubric,RubricMapperImpl,0,3,0,0,0,1,0,1,0,1
 outcome-curr-mgmt,co.edu.icesi.dev.outcome_curr_mgmt.mapper.rubric,FactorMapperImpl,0,3,0,0,0,1,0,1,0,1
-outcome-curr-mgmt,co.edu.icesi.dev.outcome_curr_mgmt.saamfi.util,SaamfiJwtTools,161,11,0,0,31,2,10,1,10,1
+outcome-curr-mgmt,co.edu.icesi.dev.outcome_curr_mgmt.saamfi.util,SaamfiJwtTools,160,12,0,0,30,3,9,2,9,2
 outcome-curr-mgmt,co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_definition,CourseBlock.CourseBlockBuilder,105,0,0,0,1,0,13,0,13,0
 outcome-curr-mgmt,co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_definition,CbAcadpcurPK.CbAcadpcurPKBuilder,27,0,0,0,1,0,5,0,5,0
 outcome-curr-mgmt,co.edu.icesi.dev.outcome_curr_mgmt.model.entity.curriculum_definition,CourseBlockCouse.CourseBlockCouseBuilder,48,0,0,0,1,0,7,0,7,0
