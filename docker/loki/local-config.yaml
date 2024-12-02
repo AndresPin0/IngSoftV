@@ -2,6 +2,7 @@ auth_enabled: false
 
 server:
   http_listen_port: 3100
+  log_level: info
 
 ingester:
   lifecycler:
@@ -9,8 +10,9 @@ ingester:
       kvstore:
         store: inmemory
       replication_factor: 1
-  chunk_idle_period: 5m       # Any chunk not receiving new logs in this time will be flushed
-  chunk_retain_period: 30s    # Min time to retain chunks in memory after they are closed
+  chunk_idle_period: 5m
+  chunk_retain_period: 30s
+  max_transfer_retries: 0
 
 schema_config:
   configs:
@@ -20,15 +22,20 @@ schema_config:
       schema: v11
       index:
         prefix: index_
-        period: 168h
+        period: 24h
 
 storage_config:
   boltdb_shipper:
     active_index_directory: /tmp/loki/index
-    cache_location: /tmp/loki/index_cache
+    cache_location: /tmp/loki/cache
     shared_store: filesystem
+    wal_directory: /tmp/loki/wal
   filesystem:
     directory: /tmp/loki/chunks
+
+compactor:
+  working_directory: /tmp/loki/compactor
+  shared_store: s3
 
 limits_config:
   enforce_metric_name: false
