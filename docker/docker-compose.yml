@@ -40,7 +40,7 @@ services:
     ports:
       - "9093:9093"
     volumes:
-      - ./alertmanager/config.yml:/etc/alertmanager/alertmanager.yml
+      - ./alertmanager/config.yml:/etc/alertmanager/config.yml
 
   node_exporter:
     image: prom/node-exporter:latest
@@ -68,13 +68,6 @@ services:
       - ./promtail/config.yml:/etc/promtail/config.yml
       - ./outcome-curr-mgmt/logs/application.log:/var/log/application.log
     command: -config.file=/etc/promtail/config.yml
-
-  grafana-agent:
-    image: grafana/agent:latest
-    volumes:
-      - ./agent/agent-config.yaml:/etc/agent/agent-config.yaml
-    command:
-      - --config.file=/etc/agent/agent-config.yaml
 
 volumes:
   grafana-storage:

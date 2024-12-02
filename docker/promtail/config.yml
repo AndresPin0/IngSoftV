@@ -1,5 +1,6 @@
 server:
   http_listen_port: 9080
+  log_level: debug
 
 positions:
   filename: /tmp/positions.yaml
@@ -8,12 +9,12 @@ clients:
   - url: http://loki:3100/loki/api/v1/push
 
 scrape_configs:
-  - job_name: curriculum-app-logs
+  - job_name: 'curriculum-app-logs'
     static_configs:
       - targets: ['localhost']
         labels:
-          job: curriculum-app
-          __path__: /var/log/application.log
+          job: 'curriculum-app'
+          __path__: '/logs/*.log'
     pipeline_stages:
       - drop:
-	  expression: 'level="DEBUG"'
+          expression: 'level="DEBUG"'
