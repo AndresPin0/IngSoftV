@@ -60,5 +60,11 @@ groups:
           summary: "Alta tasa de errores en la aplicación"
           description: "La tasa de errores supera el 5% en los últimos 1 minuto."
 
-
-
+      - alert: test-alerts
+        expr: vector(1)
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Test alert"
+          description: "This is a test alert."

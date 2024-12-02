@@ -11,10 +11,8 @@ clients:
 scrape_configs:
   - job_name: 'curriculum-app-logs'
     static_configs:
-      - targets: ['localhost']
+      - targets: ['curriculum-app:9092']
         labels:
           job: 'curriculum-app'
-          __path__: '/logs/*.log'
+          __path__: /var/log/outcome-curr-mgmt/*.log
     pipeline_stages:
-      - drop:
-          expression: 'level="DEBUG"'

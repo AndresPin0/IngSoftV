@@ -1,23 +1,23 @@
 global:
   resolve_timeout: 5m
-  smtp_smarthost: 'smtp.gmail.com:587'
-  smtp_from: 'pinoa734@gmail.com'
-  smtp_auth_username: 'pinoa734@gmail.com
-  smtp_auth_password: 'qowy yoef rick dvrr'
-  smtp_require_tls: true
-
 
 route:
   group_by: ['alertname']
   group_wait: 10s
   group_interval: 10m
   repeat_interval: 1h
-  receiver: 'default-receiver'
+  receiver: 'email-notifications'
 
 receivers:
-  - name: 'default-receiver'
+  - name: 'email-notifications'
     email_configs:
       - to: 'pinoandres85@gmail.com'
+        from: 'alertmanager@example.com'
+        smarthost: 'smtp.gmail.com:587'
+        auth_username: 'pinoa734@gmail.com'
+        auth_identity: 'pinoa734@gmail.com'
+        auth_password: 'qowyyoefrickdvrr'
+        send_resolved: true
 
 inhibit_rules:
   - source_match:
