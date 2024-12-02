@@ -10,7 +10,7 @@ services:
     depends_on:
       - prometheus
     networks:
-      - prom-net
+        - prom-net
 
   grafana:
     image: grafana/grafana:latest
